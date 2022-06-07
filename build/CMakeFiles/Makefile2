@@ -53,21 +53,58 @@ CMAKE_BINARY_DIR = /home/vulcan/projects/VulcanSerial/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/vulcanserial.dir/all
 all: src/all
+all: example/all
 
 .PHONY : all
 
 # The main recursive "preinstall" target.
 preinstall: src/preinstall
+preinstall: example/preinstall
 
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/vulcanserial.dir/clean
 clean: src/clean
+clean: example/clean
 
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory example
+
+# Recursive "all" directory target.
+example/all: example/rw_commond/all
+
+.PHONY : example/all
+
+# Recursive "preinstall" directory target.
+example/preinstall: example/rw_commond/preinstall
+
+.PHONY : example/preinstall
+
+# Recursive "clean" directory target.
+example/clean: example/rw_commond/clean
+
+.PHONY : example/clean
+
+#=============================================================================
+# Directory level rules for directory example/rw_commond
+
+# Recursive "all" directory target.
+example/rw_commond/all:
+
+.PHONY : example/rw_commond/all
+
+# Recursive "preinstall" directory target.
+example/rw_commond/preinstall:
+
+.PHONY : example/rw_commond/preinstall
+
+# Recursive "clean" directory target.
+example/rw_commond/clean:
+
+.PHONY : example/rw_commond/clean
 
 #=============================================================================
 # Directory level rules for directory src
@@ -86,33 +123,6 @@ src/preinstall:
 src/clean: src/CMakeFiles/VulcanSerial.dir/clean
 
 .PHONY : src/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/vulcanserial.dir
-
-# All Build rule for target.
-CMakeFiles/vulcanserial.dir/all:
-	$(MAKE) -f CMakeFiles/vulcanserial.dir/build.make CMakeFiles/vulcanserial.dir/depend
-	$(MAKE) -f CMakeFiles/vulcanserial.dir/build.make CMakeFiles/vulcanserial.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/vulcan/projects/VulcanSerial/build/CMakeFiles --progress-num=3,4 "Built target vulcanserial"
-.PHONY : CMakeFiles/vulcanserial.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/vulcanserial.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/vulcan/projects/VulcanSerial/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/vulcanserial.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/vulcan/projects/VulcanSerial/build/CMakeFiles 0
-.PHONY : CMakeFiles/vulcanserial.dir/rule
-
-# Convenience name for target.
-vulcanserial: CMakeFiles/vulcanserial.dir/rule
-
-.PHONY : vulcanserial
-
-# clean rule for target.
-CMakeFiles/vulcanserial.dir/clean:
-	$(MAKE) -f CMakeFiles/vulcanserial.dir/build.make CMakeFiles/vulcanserial.dir/clean
-.PHONY : CMakeFiles/vulcanserial.dir/clean
 
 #=============================================================================
 # Target rules for target src/CMakeFiles/VulcanSerial.dir

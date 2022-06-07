@@ -221,6 +221,12 @@ CSerialPort_LIBRARY:FILEPATH=/usr/local/lib/libcserialport.so
 //Build VulcanSerial_HEADERS shared library
 SERIAL_BUILD_SHARED_LIBS:BOOL=OFF
 
+//build the project on linux 
+_BUILD_EXAMPLE:BOOL=ON
+
+//build the project on linux 
+_LINUX:BOOL=ON
+
 //Value Computed by CMake
 vulcanserial_BINARY_DIR:STATIC=/home/vulcan/projects/VulcanSerial/build
 
@@ -332,7 +338,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=2
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=4
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

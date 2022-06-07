@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_FLAGS =  
 
-CXX_DEFINES = 
+CXX_DEFINES = -D_LINUX
 
-CXX_INCLUDES = -I/home/vulcan/projects/VulcanSerial/src/../include/VulcanSerial 
+CXX_INCLUDES = -I/home/vulcan/projects/VulcanSerial/src/../include/VulcanSerial -I/home/vulcan/projects/VulcanSerial/src/../include 
 

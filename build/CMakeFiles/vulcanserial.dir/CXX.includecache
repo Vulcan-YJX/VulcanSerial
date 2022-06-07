@@ -6,7 +6,45 @@
 
 #IncludeRegexTransform: 
 
-/home/vulcan/projects/VulcanSerial/main.cpp
+../include/Exception.hpp
 iostream
 -
+sstream
+-
+stdexcept
+-
+string
+-
+
+/home/vulcan/projects/VulcanSerial/src/SerialPort.cpp
+iostream
+-
+sstream
+-
+stdio.h
+-
+string.h
+-
+unistd.h
+-
+fcntl.h
+-
+errno.h
+-
+system_error
+-
+sys/ioctl.h
+-
+cassert
+-
+asm/ioctls.h
+-
+asm/termbits.h
+-
+algorithm
+-
+iterator
+-
+Exception.hpp
+/home/vulcan/projects/VulcanSerial/src/Exception.hpp
 

@@ -22,8 +22,8 @@
 // User headers
 #include "Exception.hpp"
 
-namespace vulcan {
-    namespace CppLinuxSerial {
+
+namespace VulcanSerial {
 
         /// \brief      Represents the baud rate "types" that can be used with the serial port. STANDARD represents all
         ///             the standard baud rates as provided by UNIX, CUSTOM represents a baud rate defined by an arbitray integer.
@@ -230,7 +230,7 @@ namespace vulcan {
 
         };
 
-    } // namespace CppLinuxSerial
-} // namespace vulcan
+} // namespace VulcanSerial
+
 
 #endif // #ifndef SERIAL_PORT_SERIAL_PORT_H

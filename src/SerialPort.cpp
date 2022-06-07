@@ -24,13 +24,12 @@
 #include <iterator>
 
 // User includes
-#include "CppLinuxSerial/Exception.hpp"
-#include "CppLinuxSerial/SerialPort.hpp"
+#include "Exception.hpp"
+#include "SerialPort.hpp"
 
 #define    BOTHER 0010000
 
-namespace vulcan {
-namespace CppLinuxSerial {
+namespace VulcanSerial {
 
 	SerialPort::SerialPort() {
         echo_ = false;
@@ -524,5 +523,5 @@ namespace CppLinuxSerial {
       return state_;
     }
 
-} // namespace CppLinuxSerial
-} // namespace vulcan
+} // namespace VulcanSerial
+

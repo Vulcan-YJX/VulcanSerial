@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/vulcanserial.dir/main.cpp.o"
-  "vulcanserial"
-  "vulcanserial.pdb"
+  "CMakeFiles/vulcanserial.dir/src/SerialPort.cpp.o"
+  "libvulcanserial.a"
+  "libvulcanserial.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

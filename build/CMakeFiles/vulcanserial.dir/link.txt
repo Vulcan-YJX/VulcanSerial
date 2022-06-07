@@ -1,1 +1,2 @@
-/usr/bin/c++    -rdynamic CMakeFiles/vulcanserial.dir/main.cpp.o  -o vulcanserial 
+/usr/bin/ar qc libvulcanserial.a  CMakeFiles/vulcanserial.dir/src/SerialPort.cpp.o
+/usr/bin/ranlib libvulcanserial.a

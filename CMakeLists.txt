@@ -2,8 +2,31 @@ cmake_minimum_required(VERSION 3.0)
 
 project(vulcanserial)
 
+option(_LINUX "build the project on linux " ON)
+option(_BUILD_EXAMPLE "build the project on linux " ON)
+
+if(_LINUX)
+    add_definitions("-D_LINUX") 
+endif()
+
 add_subdirectory(src)
 
-add_executable(vulcanserial main.cpp)
 
-install(TARGETS vulcanserial RUNTIME DESTINATION bin)
+if(_BUILD_EXAMPLE)
+    add_subdirectory(example)
+endif()
+
+# FILE(GLOB VulcanSerial_LIB_SRCS
+#         src/*.cpp
+#     )
+# 
+# add_library(
+#     ${PROJECT_NAME}
+#     STATIC
+#     ${VulcanSerial_LIB_SRCS}
+# )
+
+
+# add_executable(vulcanserial ${OSDK_LIB_SRCS} main.cpp)
+# 
+# install(TARGETS vulcanserial RUNTIME DESTINATION bin)

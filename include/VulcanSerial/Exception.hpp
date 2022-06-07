@@ -15,8 +15,8 @@
 #include <stdexcept>
 #include <string>
 
-namespace vulcan {
-    namespace CppLinuxSerial {
+
+namespace VulcanSerial {
 
         class Exception : public std::runtime_error {
 
@@ -36,8 +36,8 @@ namespace vulcan {
             std::string msg_;
         };
 
-    } // namespace CppLinuxSerial
-} // namespace vulcan
+} // namespace VulcanSerial
+
 
 #define THROW_EXCEPT(arg) throw Exception(__FILE__, __LINE__, arg);
 
