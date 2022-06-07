@@ -56,6 +56,18 @@ CMAKE_BINARY_DIR = /home/vulcan/projects/VulcanSerial/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
@@ -112,28 +124,16 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
-
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/vulcan/projects/VulcanSerial/build/CMakeFiles /home/vulcan/projects/VulcanSerial/build/CMakeFiles/progress.marks
-	$(MAKE) -f CMakeFiles/Makefile2 all
+	cd /home/vulcan/projects/VulcanSerial/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/vulcan/projects/VulcanSerial/build/CMakeFiles /home/vulcan/projects/VulcanSerial/build/src/CMakeFiles/progress.marks
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f CMakeFiles/Makefile2 src/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/vulcan/projects/VulcanSerial/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -143,71 +143,60 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/vulcan/projects/VulcanSerial/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named vulcanserial
+# Convenience name for target.
+src/CMakeFiles/VulcanSerial.dir/rule:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/VulcanSerial.dir/rule
+.PHONY : src/CMakeFiles/VulcanSerial.dir/rule
 
-# Build rule for target.
-vulcanserial: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 vulcanserial
-.PHONY : vulcanserial
+# Convenience name for target.
+VulcanSerial: src/CMakeFiles/VulcanSerial.dir/rule
 
-# fast build rule for target.
-vulcanserial/fast:
-	$(MAKE) -f CMakeFiles/vulcanserial.dir/build.make CMakeFiles/vulcanserial.dir/build
-.PHONY : vulcanserial/fast
-
-#=============================================================================
-# Target rules for targets named VulcanSerial
-
-# Build rule for target.
-VulcanSerial: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 VulcanSerial
 .PHONY : VulcanSerial
 
 # fast build rule for target.
 VulcanSerial/fast:
-	$(MAKE) -f src/CMakeFiles/VulcanSerial.dir/build.make src/CMakeFiles/VulcanSerial.dir/build
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f src/CMakeFiles/VulcanSerial.dir/build.make src/CMakeFiles/VulcanSerial.dir/build
 .PHONY : VulcanSerial/fast
 
-main.o: main.cpp.o
+SerialPort.o: SerialPort.cpp.o
 
-.PHONY : main.o
+.PHONY : SerialPort.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/vulcanserial.dir/build.make CMakeFiles/vulcanserial.dir/main.cpp.o
-.PHONY : main.cpp.o
+SerialPort.cpp.o:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f src/CMakeFiles/VulcanSerial.dir/build.make src/CMakeFiles/VulcanSerial.dir/SerialPort.cpp.o
+.PHONY : SerialPort.cpp.o
 
-main.i: main.cpp.i
+SerialPort.i: SerialPort.cpp.i
 
-.PHONY : main.i
+.PHONY : SerialPort.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/vulcanserial.dir/build.make CMakeFiles/vulcanserial.dir/main.cpp.i
-.PHONY : main.cpp.i
+SerialPort.cpp.i:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f src/CMakeFiles/VulcanSerial.dir/build.make src/CMakeFiles/VulcanSerial.dir/SerialPort.cpp.i
+.PHONY : SerialPort.cpp.i
 
-main.s: main.cpp.s
+SerialPort.s: SerialPort.cpp.s
 
-.PHONY : main.s
+.PHONY : SerialPort.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/vulcanserial.dir/build.make CMakeFiles/vulcanserial.dir/main.cpp.s
-.PHONY : main.cpp.s
+SerialPort.cpp.s:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f src/CMakeFiles/VulcanSerial.dir/build.make src/CMakeFiles/VulcanSerial.dir/SerialPort.cpp.s
+.PHONY : SerialPort.cpp.s
 
 # Help Target
 help:
@@ -215,17 +204,16 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... install/strip"
-	@echo "... vulcanserial"
 	@echo "... VulcanSerial"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... SerialPort.o"
+	@echo "... SerialPort.i"
+	@echo "... SerialPort.s"
 .PHONY : help
 
 
@@ -237,6 +225,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/vulcan/projects/VulcanSerial/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

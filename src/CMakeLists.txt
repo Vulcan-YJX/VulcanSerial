@@ -3,9 +3,14 @@
 file(GLOB_RECURSE VulcanSerial_SRC
         "*.cpp")
 
-file(GLOB_RECURSE VulcanSerial_HEADERS
-        "${CMAKE_SOURCE_DIR}/include/*.hpp")
+message(STATUS "prOJECT_NAME source :${PROJECT_NAME}/include/VulcanSerial/*.hpp")
 
+file(GLOB_RECURSE VulcanSerial_HEADERS
+        "${CMAKE_SOURCE_DIR}/include/VulcanSerial/*.hpp")
+        
+# include_directories(
+#     ../include/VulcanSerial
+# )
 option(SERIAL_BUILD_SHARED_LIBS "Build VulcanSerial_HEADERS shared library" OFF)
 
 if (SERIAL_BUILD_SHARED_LIBS)
@@ -14,10 +19,10 @@ else()
   set(LibType STATIC)
 endif()
 
-add_library(VulcanSerial ${LibType} ${CppLinuxSerial_SRC} ${CppLinuxSerial_HEADERS})
+add_library(VulcanSerial ${LibType} ${VulcanSerial_SRC} ${VulcanSerial_HEADERS})
 
 
-target_include_directories(VulcanSerial PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>"
+target_include_directories(VulcanSerial PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include/VulcanSerial>"
                                                 "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}>")                                                  
 
 # On Linux, "sudo make install" will typically copy the library

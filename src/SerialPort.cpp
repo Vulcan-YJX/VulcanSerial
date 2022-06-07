@@ -475,40 +475,6 @@ namespace CppLinuxSerial {
 		// If code reaches here, read must of been successful
 	}
 
-	// termios SerialPort::GetTermios() {
-    //     if(fileDesc_ == -1)
-    //         throw std::runtime_error("GetTermios() called but file descriptor was not valid.");
-
-	// 	struct termios tty;
-	// 	memset(&tty, 0, sizeof(tty));
-
-	// 	// Get current settings (will be stored in termios structure)
-	// 	if(tcgetattr(fileDesc_, &tty) != 0)
-	// 	{
-	// 		// Error occurred
-	// 		std::cout << "Could not get terminal attributes for \"" << device_ << "\" - " << strerror(errno) << std::endl;
-	// 		throw std::system_error(EFAULT, std::system_category());
-	// 		//return false;
-	// 	}
-
-	// 	return tty;
-	// }
-
-	// void SerialPort::SetTermios(termios myTermios)
-	// {
-	// 	// Flush port, then apply attributes
-	// 	tcflush(fileDesc_, TCIFLUSH);
-
-	// 	if(tcsetattr(fileDesc_, TCSANOW, &myTermios) != 0)
-	// 	{
-	// 		// Error occurred
-	// 		std::cout << "Could not apply terminal attributes for \"" << device_ << "\" - " << strerror(errno) << std::endl;
-	// 		throw std::system_error(EFAULT, std::system_category());
-
-	// 	}
-
-	// 	// Successful!
-	// }
 
 	termios2 SerialPort::GetTermios2()
 	{
@@ -517,13 +483,6 @@ namespace CppLinuxSerial {
         ioctl(fileDesc_, TCGETS2, &term2);
 
 		return term2;
-
-        // term2.c_cflag &= ~CBAUD;  /* Remove current BAUD rate */
-        // term2.c_cflag |= BOTHER;  /* Allow custom BAUD rate using int input */
-        // term2.c_ispeed = speed;   /* Set the input BAUD rate */
-        // term2.c_ospeed = speed;   /* Set the output BAUD rate */
-
-        // ioctl(fd, TCSETS2, &term2);
 	}
 
 	void SerialPort::SetTermios2(termios2 tty)
@@ -566,4 +525,4 @@ namespace CppLinuxSerial {
     }
 
 } // namespace CppLinuxSerial
-} // namespace mn
+} // namespace vulcan
