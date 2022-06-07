@@ -24,8 +24,8 @@
 #include <iterator>
 
 // User includes
-#include "Exception.hpp"
-#include "SerialPort.hpp"
+#include "VulcanSerial/Exception.hpp"
+#include "VulcanSerial/SerialPort.hpp"
 
 #define    BOTHER 0010000
 

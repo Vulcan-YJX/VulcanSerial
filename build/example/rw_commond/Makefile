@@ -156,6 +156,75 @@ depend:
 	cd /home/vulcan/projects/VulcanSerial/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+# Convenience name for target.
+example/rw_commond/CMakeFiles/RWCommond.dir/rule:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f CMakeFiles/Makefile2 example/rw_commond/CMakeFiles/RWCommond.dir/rule
+.PHONY : example/rw_commond/CMakeFiles/RWCommond.dir/rule
+
+# Convenience name for target.
+RWCommond: example/rw_commond/CMakeFiles/RWCommond.dir/rule
+
+.PHONY : RWCommond
+
+# fast build rule for target.
+RWCommond/fast:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f example/rw_commond/CMakeFiles/RWCommond.dir/build.make example/rw_commond/CMakeFiles/RWCommond.dir/build
+.PHONY : RWCommond/fast
+
+__/__/src/SerialPort.o: __/__/src/SerialPort.cpp.o
+
+.PHONY : __/__/src/SerialPort.o
+
+# target to build an object file
+__/__/src/SerialPort.cpp.o:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f example/rw_commond/CMakeFiles/RWCommond.dir/build.make example/rw_commond/CMakeFiles/RWCommond.dir/__/__/src/SerialPort.cpp.o
+.PHONY : __/__/src/SerialPort.cpp.o
+
+__/__/src/SerialPort.i: __/__/src/SerialPort.cpp.i
+
+.PHONY : __/__/src/SerialPort.i
+
+# target to preprocess a source file
+__/__/src/SerialPort.cpp.i:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f example/rw_commond/CMakeFiles/RWCommond.dir/build.make example/rw_commond/CMakeFiles/RWCommond.dir/__/__/src/SerialPort.cpp.i
+.PHONY : __/__/src/SerialPort.cpp.i
+
+__/__/src/SerialPort.s: __/__/src/SerialPort.cpp.s
+
+.PHONY : __/__/src/SerialPort.s
+
+# target to generate assembly for a file
+__/__/src/SerialPort.cpp.s:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f example/rw_commond/CMakeFiles/RWCommond.dir/build.make example/rw_commond/CMakeFiles/RWCommond.dir/__/__/src/SerialPort.cpp.s
+.PHONY : __/__/src/SerialPort.cpp.s
+
+main.o: main.cpp.o
+
+.PHONY : main.o
+
+# target to build an object file
+main.cpp.o:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f example/rw_commond/CMakeFiles/RWCommond.dir/build.make example/rw_commond/CMakeFiles/RWCommond.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
+
+.PHONY : main.i
+
+# target to preprocess a source file
+main.cpp.i:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f example/rw_commond/CMakeFiles/RWCommond.dir/build.make example/rw_commond/CMakeFiles/RWCommond.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
+
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	cd /home/vulcan/projects/VulcanSerial/build && $(MAKE) -f example/rw_commond/CMakeFiles/RWCommond.dir/build.make example/rw_commond/CMakeFiles/RWCommond.dir/main.cpp.s
+.PHONY : main.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -168,6 +237,13 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... RWCommond"
+	@echo "... __/__/src/SerialPort.o"
+	@echo "... __/__/src/SerialPort.i"
+	@echo "... __/__/src/SerialPort.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 

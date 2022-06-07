@@ -52,4 +52,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/VulcanSerial.dir/DependInfo.cmake"
+  "example/rw_commond/CMakeFiles/RWCommond.dir/DependInfo.cmake"
   )

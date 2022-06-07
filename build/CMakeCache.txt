@@ -218,8 +218,17 @@ CSerialPort_INCLUDE_DIR:PATH=/usr/local/include
 //Path to a library.
 CSerialPort_LIBRARY:FILEPATH=/usr/local/lib/libcserialport.so
 
+//Value Computed by CMake
+RWCommond_BINARY_DIR:STATIC=/home/vulcan/projects/VulcanSerial/build/example/rw_commond
+
+//Value Computed by CMake
+RWCommond_SOURCE_DIR:STATIC=/home/vulcan/projects/VulcanSerial/example/rw_commond
+
 //Build VulcanSerial_HEADERS shared library
 SERIAL_BUILD_SHARED_LIBS:BOOL=OFF
+
+//The directory containing a CMake configuration file for VulcanSerial.
+VulcanSerial_DIR:PATH=VulcanSerial_DIR-NOTFOUND
 
 //build the project on linux 
 _BUILD_EXAMPLE:BOOL=ON
