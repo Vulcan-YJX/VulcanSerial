@@ -107,7 +107,9 @@ namespace VulcanSerial {
             /// \param		data		The data that will be written to the COM port.
             /// \throws		CppLinuxSerial::Exception if state != OPEN.
             void Write(const std::string& data);
-
+            
+            void Write(const std::string& data, uint16_t size);
+            
             /// \brief		Sends a binary message over the com port.
             /// \param		data		The data that will be written to the COM port.
             /// \throws		CppLinuxSerial::Exception if state != OPEN.

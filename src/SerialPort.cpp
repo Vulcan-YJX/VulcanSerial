@@ -261,7 +261,25 @@ namespace VulcanSerial {
 		}
 	}
 
-       void SerialPort::WriteBinary(const std::vector<uint8_t>& data) {
+	
+    void SerialPort::Write(const std::string& data, uint16_t size) {
+
+        if(state_ != State::OPEN)
+            THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but state != OPEN. Please call Open() first.");
+
+		if(fileDesc_ < 0) {
+			THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but file descriptor < 0, indicating file has not been opened.");
+		}
+
+		int writeResult = write(fileDesc_, data.c_str(), size);
+
+		// Check status
+		if (writeResult == -1) {
+			throw std::system_error(EFAULT, std::system_category());
+		}
+	}
+
+    void SerialPort::WriteBinary(const std::vector<uint8_t>& data) {
 
         if(state_ != State::OPEN)
             THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but state != OPEN. Please call Open() first.");
