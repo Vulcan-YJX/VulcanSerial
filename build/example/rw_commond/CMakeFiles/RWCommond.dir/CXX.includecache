@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/VulcanSerial/Exception.hpp
+iostream
+-
+sstream
+-
+stdexcept
+-
+string
+-
+
+../include/VulcanSerial/SerialPort.hpp
+string
+-
+fstream
+-
+sstream
+-
+vector
+-
+asm/ioctls.h
+-
+asm/termbits.h
+-
+Exception.hpp
+../include/VulcanSerial/Exception.hpp
+
+/home/vulcan/projects/VulcanSerial/example/rw_commond/main.cpp
+VulcanSerial/SerialPort.hpp
+/home/vulcan/projects/VulcanSerial/example/rw_commond/VulcanSerial/SerialPort.hpp
+

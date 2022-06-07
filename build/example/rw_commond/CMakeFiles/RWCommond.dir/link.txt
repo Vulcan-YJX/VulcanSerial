@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/RWCommond.dir/main.cpp.o CMakeFiles/RWCommond.dir/__/__/src/SerialPort.cpp.o  -o RWCommond  -lpthread 
