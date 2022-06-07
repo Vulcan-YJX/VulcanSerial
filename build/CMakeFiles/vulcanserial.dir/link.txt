@@ -1,2 +1,0 @@
-/usr/bin/ar qc libvulcanserial.a  CMakeFiles/vulcanserial.dir/src/SerialPort.cpp.o
-/usr/bin/ranlib libvulcanserial.a

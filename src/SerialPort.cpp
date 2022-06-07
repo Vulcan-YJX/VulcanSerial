@@ -34,31 +34,22 @@ namespace VulcanSerial {
 	SerialPort::SerialPort() {
         echo_ = false;
         timeout_ms_ = defaultTimeout_ms_;
-		baudRateType_ = BaudRateType::STANDARD;
         baudRateStandard_ = defaultBaudRate_;
         readBufferSize_B_ = defaultReadBufferSize_B_;
         readBuffer_.reserve(readBufferSize_B_);
 		state_ = State::CLOSED;
 	}
 
-	SerialPort::SerialPort(const std::string& device, BaudRate baudRate) :
+	SerialPort::SerialPort(const std::string& device, uint32_t baudRate) :
             SerialPort() {
 		device_ = device;
-		baudRateType_ = BaudRateType::STANDARD;
         baudRateStandard_ = baudRate;
 	}
 
-	SerialPort::SerialPort(const std::string& device, speed_t baudRate) :
-            SerialPort() {
-		device_ = device;
-		baudRateType_ = BaudRateType::CUSTOM;
-        baudRateCustom_ = baudRate;
-	}
 
-	SerialPort::SerialPort(const std::string& device, BaudRate baudRate, NumDataBits numDataBits, Parity parity, NumStopBits numStopBits) :
+	SerialPort::SerialPort(const std::string& device, uint32_t baudRate, NumDataBits numDataBits, Parity parity, NumStopBits numStopBits) :
             SerialPort() {
 		device_ = device;
-		baudRateType_ = BaudRateType::STANDARD;
         baudRateStandard_ = baudRate;
 		numDataBits_ = numDataBits;
 		parity_ = parity;
@@ -80,16 +71,9 @@ namespace VulcanSerial {
         	ConfigureTermios();
 	}
 
-	void SerialPort::SetBaudRate(BaudRate baudRate)	{		
-		baudRateType_ = BaudRateType::STANDARD;
-		baudRateStandard_ = baudRate;
-        if(state_ == State::OPEN)
-            ConfigureTermios();
-	}
 
-	void SerialPort::SetBaudRate(speed_t baudRate)	{		
-		baudRateType_ = BaudRateType::CUSTOM;
-		baudRateCustom_ = baudRate;
+	void SerialPort::SetBaudRate(uint32_t baudRate)	{		
+		baudRateStandard_ = baudRate;
         if(state_ == State::OPEN)
             ConfigureTermios();
 	}
@@ -212,123 +196,10 @@ namespace VulcanSerial {
 
         //===================== BAUD RATE =================//
 
-		// We used to use cfsetispeed() and cfsetospeed() with the B... macros, but this didn't allow
-		// us to set custom baud rates. So now to support both standard and custom baud rates lets
-		// just make everything "custom". This giant switch statement could be replaced with a map/lookup
-		// in the future
-		if (baudRateType_ == BaudRateType::STANDARD) {
-			tty.c_cflag &= ~CBAUD;
-			tty.c_cflag |= CBAUDEX;
-			switch(baudRateStandard_) {
-				case BaudRate::B_0:
-					tty.c_ispeed = 0;
-					tty.c_ospeed = 0;
-					break;
-				case BaudRate::B_50:
-					tty.c_ispeed = 50;
-					tty.c_ospeed = 50;
-					break;
-				case BaudRate::B_75:
-					tty.c_ispeed = 75;
-					tty.c_ospeed = 75;
-				    break;
-				case BaudRate::B_110:
-					tty.c_ispeed = 110;
-					tty.c_ospeed = 110;
-				    break;
-				case BaudRate::B_134:
-					tty.c_ispeed = 134;
-					tty.c_ospeed = 134;
-				    break;
-				case BaudRate::B_150:
-					tty.c_ispeed = 150;
-					tty.c_ospeed = 150;
-				    break;
-				case BaudRate::B_200:
-					tty.c_ispeed = 200;
-					tty.c_ospeed = 200;
-				    break;
-				case BaudRate::B_300:
-					tty.c_ispeed = 300;
-					tty.c_ospeed = 300;
-				    break;
-				case BaudRate::B_600:
-					tty.c_ispeed = 600;
-					tty.c_ospeed = 600;
-				    break;
-				case BaudRate::B_1200:
-					tty.c_ispeed = 1200;
-					tty.c_ospeed = 1200;
-				    break;
-				case BaudRate::B_1800:
-					tty.c_ispeed = 1800;
-					tty.c_ospeed = 1800;
-				    break;
-				case BaudRate::B_2400:
-                    
-					tty.c_ispeed = 2400;
-					tty.c_ospeed = 2400;
-				    break;
-				case BaudRate::B_4800:
+        tty.c_ispeed = baudRateStandard_;
+        tty.c_ospeed = baudRateStandard_;
 
-					tty.c_ispeed = 4800;
-					tty.c_ospeed = 4800;
-				    break;
-				case BaudRate::B_9600:
 
-					tty.c_ispeed = 9600;
-					tty.c_ospeed = 9600;
-					break;
-				case BaudRate::B_19200:
-
-					tty.c_ispeed = 19200;
-					tty.c_ospeed = 19200;
-				    break;
-				case BaudRate::B_38400:
-
-					tty.c_ispeed = 38400;
-					tty.c_ospeed = 38400;
-				    break;
-				case BaudRate::B_57600:
-
-					tty.c_ispeed = 57600;
-					tty.c_ospeed = 57600;
-				    break;
-				case BaudRate::B_115200:
-
-					tty.c_ispeed = 115200;
-					tty.c_ospeed = 115200;
-				    break;
-				case BaudRate::B_230400:
-
-					tty.c_ispeed = 230400;
-					tty.c_ospeed = 230400;
-				    break;
-				case BaudRate::B_460800:
-                    
-					tty.c_ispeed = 460800;
-					tty.c_ospeed = 460800;
-				    break;
-				default:
-					throw std::runtime_error(std::string() + "baudRate passed to " + __PRETTY_FUNCTION__ + " unrecognized.");
-			}
-		}
-		// This does no different than STANDARD atm, but let's keep
-		// them separate for now....
-		else if (baudRateType_ == BaudRateType::CUSTOM)
-		{
-			tty.c_cflag &= ~CBAUD;
-			tty.c_cflag |= CBAUDEX;
-			// tty.c_cflag |= BOTHER;
-			tty.c_ispeed = baudRateCustom_;
-			tty.c_ospeed = baudRateCustom_;
-
-		}
-		else
-		{
-			// Should never get here, bug in this libraries code!
-			assert(false);
-		}
 
 		//===================== (.c_oflag) =================//
 

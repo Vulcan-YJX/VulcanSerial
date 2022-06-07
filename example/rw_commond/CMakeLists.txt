@@ -5,6 +5,7 @@ project(RWCommond)
 message(STATUS "VulcanSerial lib : ${VulcanSerial_INCLUDE_DIR}")
 
 find_package(VulcanSerial QUIET)
+
 if (VulcanSerial_FOUND)
   add_executable( ${PROJECT_NAME} main.cpp)
   include_directories(${VulcanSerial_INCLUDE_DIR})
