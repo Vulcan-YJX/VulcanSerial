@@ -32,10 +32,6 @@ asm/termbits.h
 Exception.hpp
 ../include/VulcanSerial/Exception.hpp
 
-/home/vulcan/projects/VulcanSerial/example/rw_commond/main.cpp
-VulcanSerial/SerialPort.hpp
-/home/vulcan/projects/VulcanSerial/example/rw_commond/VulcanSerial/SerialPort.hpp
-
 /home/vulcan/projects/VulcanSerial/src/SerialPort.cpp
 iostream
 -

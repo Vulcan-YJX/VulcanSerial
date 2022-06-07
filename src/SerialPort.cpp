@@ -27,7 +27,7 @@
 #include "VulcanSerial/Exception.hpp"
 #include "VulcanSerial/SerialPort.hpp"
 
-#define    BOTHER 0010000
+
 
 namespace VulcanSerial {
 
