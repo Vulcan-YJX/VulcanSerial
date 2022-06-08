@@ -1,6 +1,6 @@
 ///
 //! @file 			Exception.cpp
-//! @author 		Vulcan YJX <vulcanyjx@163.com> 
+//! @author 		Vulcan YJX <vulcanai@163.com> 
 //! @created		2022-06-07
 //! @last-modified 	2022-06-07
 //! @brief			The main serial port class.

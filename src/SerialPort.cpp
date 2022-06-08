@@ -1,27 +1,14 @@
 //!
 //! @file 			SerialPort.cpp
-//! @author 		Vulcan YJX <vulcanyjx@163.com> 
+//! @author 		Vulcan YJX <vulcanai@163.com> 
 //! @created		2022-06-07
 //! @last-modified 	2022-06-07
 //! @brief			The main serial port class.
 
-// System includes
-#include <iostream>
-#include <sstream>
-#include <stdio.h>   	// Standard input/output definitions
-#include <string.h>  	// String function definitions
+#include <termios.h> 
 #include <unistd.h>  	// UNIX standard function definitions
-#include <fcntl.h>   	// File control definitions
-#include <errno.h>   	// Error number definitions
-// #include <termios.h> 	// POSIX terminal control definitions (struct termios)
 #include <system_error>	// For throwing std::system_error
 #include <sys/ioctl.h> // Used for TCGETS2, which is required for custom baud rates
-#include <cassert>
-// #include <asm/termios.h> // Terminal control definitions (struct termios)
-#include <asm/ioctls.h>
-#include <asm/termbits.h>
-#include <algorithm>
-#include <iterator>
 
 // User includes
 #include "VulcanSerial/Exception.hpp"
@@ -40,14 +27,14 @@ namespace VulcanSerial {
 		state_ = State::CLOSED;
 	}
 
-	SerialPort::SerialPort(const std::string& device, uint32_t baudRate) :
+	SerialPort::SerialPort(const std::string& device, speed_t baudRate) :
             SerialPort() {
 		device_ = device;
         baudRateStandard_ = baudRate;
 	}
 
 
-	SerialPort::SerialPort(const std::string& device, uint32_t baudRate, NumDataBits numDataBits, Parity parity, NumStopBits numStopBits) :
+	SerialPort::SerialPort(const std::string& device, speed_t baudRate, NumDataBits numDataBits, Parity parity, NumStopBits numStopBits) :
             SerialPort() {
 		device_ = device;
         baudRateStandard_ = baudRate;
@@ -72,7 +59,7 @@ namespace VulcanSerial {
 	}
 
 
-	void SerialPort::SetBaudRate(uint32_t baudRate)	{		
+	void SerialPort::SetBaudRate(speed_t baudRate)	{		
 		baudRateStandard_ = baudRate;
         if(state_ == State::OPEN)
             ConfigureTermios();
@@ -99,14 +86,9 @@ namespace VulcanSerial {
 	void SerialPort::Open()
 	{
 
-		// std::cout << "Attempting to open COM port \"" << device_ << "\"." << std::endl;
-
 		if(device_.empty()) {
 			THROW_EXCEPT("Attempted to open file when file path has not been assigned to.");
 		}
-
-		// Attempt to open file
-		//this->fileDesc = open(this->filePath, O_RDWR | O_NOCTTY | O_NDELAY);
 
 		// O_RDONLY for read-only, O_WRONLY for write only, O_RDWR for both read/write access
 		// 3rd, optional parameter is mode_t mode
@@ -136,7 +118,6 @@ namespace VulcanSerial {
 
 		// termios tty = GetTermios();
 		termios2 tty = GetTermios2();
-
 		//================= (.c_cflag) ===============//
 
 		// Set num. data bits
@@ -199,8 +180,6 @@ namespace VulcanSerial {
         tty.c_ispeed = baudRateStandard_;
         tty.c_ospeed = baudRateStandard_;
 
-
-
 		//===================== (.c_oflag) =================//
 
 		tty.c_oflag     =   0;              // No remapping, no delays
@@ -262,7 +241,7 @@ namespace VulcanSerial {
 	}
 
 	
-    void SerialPort::Write(const std::string& data, uint16_t size) {
+    int SerialPort::Write(const std::string& data, uint16_t size) {
 
         if(state_ != State::OPEN)
             THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but state != OPEN. Please call Open() first.");
@@ -273,11 +252,22 @@ namespace VulcanSerial {
 
 		int writeResult = write(fileDesc_, data.c_str(), size);
 
-		// Check status
+        return writeResult;
+	}
+    
+    void SerialPort::WriteChar (const unsigned char c){
+        if(state_ != State::OPEN)
+            THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but state != OPEN. Please call Open() first.");
+
+		if(fileDesc_ < 0) {
+			THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but file descriptor < 0, indicating file has not been opened.");
+		}
+        int writeResult  = write (fileDesc_, &c, 1) ;
+        		// Check status
 		if (writeResult == -1) {
 			throw std::system_error(EFAULT, std::system_category());
 		}
-	}
+    }
 
     void SerialPort::WriteBinary(const std::vector<uint8_t>& data) {
 
@@ -301,19 +291,9 @@ namespace VulcanSerial {
         data.clear();
 
 		if(fileDesc_ == 0) {
-			//this->sp->PrintError(SmartPrint::Ss() << "Read() was called but file descriptor (fileDesc) was 0, indicating file has not been opened.");
-			//return false;
 			THROW_EXCEPT("Read() was called but file descriptor (fileDesc) was 0, indicating file has not been opened.");
 		}
 
-		// Allocate memory for read buffer
-//		char buf [256];
-//		memset (&buf, '\0', sizeof buf);
-
-		// Read from file
-        // We provide the underlying raw array from the readBuffer_ vector to this C api.
-        // This will work because we do not delete/resize the vector while this method
-        // is called
 		ssize_t n = read(fileDesc_, &readBuffer_[0], readBufferSize_B_);
 
 		// Error Handling
@@ -324,23 +304,31 @@ namespace VulcanSerial {
 
 		if(n > 0) {
 
-//			buf[n] = '\0';
-			//printf("%s\r\n", buf);
-//			data.append(buf);
             data = std::string(&readBuffer_[0], n);
 			//std::cout << *str << " and size of string =" << str->size() << "\r\n";
 		}
 
 		// If code reaches here, read must of been successful
 	}
+    
+    
+    int SerialPort::ReadChar()
+    {
+        uint8_t charBuf ;
 
+        if (read(fileDesc_, &charBuf, 1) != 1){
+            return -1 ;
+        }
+        
+        return ((int)charBuf) & 0xFF ;
+    }
+        
 	void SerialPort::ReadBinary(std::vector<uint8_t>& data)
 	{
         data.clear();
 
 		if(fileDesc_ == 0) {
-			//this->sp->PrintError(SmartPrint::Ss() << "Read() was called but file descriptor (fileDesc) was 0, indicating file has not been opened.");
-			//return false;
+        
 			THROW_EXCEPT("Read() was called but file descriptor (fileDesc) was 0, indicating file has not been opened.");
 		}
 
@@ -408,6 +396,7 @@ namespace VulcanSerial {
         return ret;
         
     }
+    
     State SerialPort::GetState() {
       return state_;
     }

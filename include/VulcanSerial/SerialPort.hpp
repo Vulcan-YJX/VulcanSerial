@@ -1,6 +1,6 @@
 ///
 //! @file 			SerialPort.hpp
-//! @author 		Vulcan YJX <vulcanyjx@163.com> 
+//! @author 		Vulcan YJX <vulcanai@163.com> 
 //! @created		2022-06-07
 //! @last-modified 	2022-06-07
 //! @brief			The main serial port class.
@@ -10,17 +10,29 @@
 #define SERIAL_PORT_SERIAL_PORT_H
 
 // System headers
-#include <string>
+// #include <string>
 #include <fstream> // For file I/O (reading/writing to COM port)
-#include <sstream>
-// #include <termios.h> // POSIX terminal control definitions (struct termios)
-// #include <asm/termios.h> // Terminal control definitions (struct termios)
+// #include <sstream>
+// System includes
+// #include <iostream>
+// #include <stdio.h>   	// Standard input/output definitions
+// 
+// 
+#include <fcntl.h>   	// File control definitions
+// #include <errno.h>   	// Error number definitions
+
+
+#include <cassert>
+
+#include <algorithm>
+#include <iterator>
 #include <vector>
 #include <asm/ioctls.h>
-#include <asm/termbits.h>
 
 // User headers
 #include "Exception.hpp"
+#include "Termbits.hpp"
+
 
 
 namespace VulcanSerial {
@@ -59,10 +71,10 @@ namespace VulcanSerial {
             SerialPort();
 
             /// \brief		Constructor that sets up serial port with the basic (required) parameters.
-            SerialPort(const std::string &device, uint32_t baudRate);
+            SerialPort(const std::string &device, speed_t baudRate);
 
             /// \brief		Constructor that sets up serial port and allows the user to specify all the common parameters.
-            SerialPort(const std::string &device, uint32_t baudRate, NumDataBits numDataBits, Parity parity, NumStopBits numStopBits);
+            SerialPort(const std::string &device, speed_t baudRate, NumDataBits numDataBits, Parity parity, NumStopBits numStopBits);
 
             /// \brief		Destructor. Closes serial port if still open.
             virtual ~SerialPort();
@@ -72,7 +84,7 @@ namespace VulcanSerial {
             void SetDevice(const std::string &device);
 
             /// \brief      Call this to set a standard baud rate.
-            void SetBaudRate(uint32_t baudRate);
+            void SetBaudRate(speed_t baudRate);
 
             /// \brief      Call this to set the num. of data bits.
             void SetNumDataBits(NumDataBits numDataBits);
@@ -108,7 +120,15 @@ namespace VulcanSerial {
             /// \throws		CppLinuxSerial::Exception if state != OPEN.
             void Write(const std::string& data);
             
-            void Write(const std::string& data, uint16_t size);
+            /// \brief		Sends a text message over the com port.
+            /// \param		data		The data that will be written to the COM port.
+            /// \throws		CppLinuxSerial::Exception if state != OPEN.
+            /// \return     Read error return -1.
+            int Write(const std::string& data, uint16_t size);
+            
+            /// \brief		Sends a text message over the com port.
+            /// \throws		CppLinuxSerial::Exception if state != OPEN.
+            void WriteChar (const unsigned char c);
             
             /// \brief		Sends a binary message over the com port.
             /// \param		data		The data that will be written to the COM port.
@@ -122,6 +142,9 @@ namespace VulcanSerial {
             /// \throws		CppLinuxSerial::Exception if state != OPEN.
             void Read(std::string& data);
 
+            /// \brief		Use to read char from the COM port.
+            int ReadChar();
+            
             /// \brief		Use to read binary data from the COM port.
             /// \param		data		The object the read uint8_t bytes from the COM port will be saved to.
             /// \param      wait_ms     The amount of time to wait for data. Set to 0 for non-blocking mode. Set to -1
@@ -137,6 +160,8 @@ namespace VulcanSerial {
             /// \brief          Use to get the state of the serial port
             /// \returns        The state of the serial port
             State GetState();
+            
+            void Flush();
 
         private:
 
@@ -159,10 +184,7 @@ namespace VulcanSerial {
             std::string device_;
 
             /// \brief      The current baud rate if baudRateType_ == STANDARD.
-            uint32_t baudRateStandard_;
-
-            /// \brief      The current baud rate if baudRateType_ == CUSTOM.
-            speed_t baudRateCustom_;
+            speed_t baudRateStandard_;
 
             /// \brief      The num. of data bits. Defaults to 8 (most common).
             NumDataBits numDataBits_ = NumDataBits::EIGHT;

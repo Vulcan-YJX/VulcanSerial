@@ -2,12 +2,10 @@ cmake_minimum_required(VERSION 3.0)
 
 project(vulcanserial)
 
-option(_LINUX "build the project on linux " ON)
-option(_BUILD_EXAMPLE "build the project on linux " ON)
 
-if(_LINUX)
-    add_definitions("-D_LINUX") 
-endif()
+option(_BUILD_EXAMPLE "build the example on linux " OFF)
+
+add_definitions("-D_LINUX") 
 
 add_subdirectory(src)
 
