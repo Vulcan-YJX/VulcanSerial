@@ -169,19 +169,6 @@ VulcanSerial/fast:
 	$(MAKE) -f src/CMakeFiles/VulcanSerial.dir/build.make src/CMakeFiles/VulcanSerial.dir/build
 .PHONY : VulcanSerial/fast
 
-#=============================================================================
-# Target rules for targets named RWCommond
-
-# Build rule for target.
-RWCommond: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 RWCommond
-.PHONY : RWCommond
-
-# fast build rule for target.
-RWCommond/fast:
-	$(MAKE) -f example/rw_commond/CMakeFiles/RWCommond.dir/build.make example/rw_commond/CMakeFiles/RWCommond.dir/build
-.PHONY : RWCommond/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -195,7 +182,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... VulcanSerial"
-	@echo "... RWCommond"
 .PHONY : help
 
 

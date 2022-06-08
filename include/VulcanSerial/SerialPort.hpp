@@ -198,6 +198,10 @@ namespace VulcanSerial {
             /// \throws		CppLinuxSerial::Exception if state != OPEN.
             void Write(const std::string& data);
 
+            void Write(const uint8_t *data, size_t length);
+            
+            void WriteChar(const unsigned char c);
+            
             /// \brief		Sends a binary message over the com port.
             /// \param		data		The data that will be written to the COM port.
             /// \throws		CppLinuxSerial::Exception if state != OPEN.
@@ -210,6 +214,7 @@ namespace VulcanSerial {
             /// \throws		CppLinuxSerial::Exception if state != OPEN.
             void Read(std::string& data);
 
+            int ReadChar (void);
             /// \brief		Use to read binary data from the COM port.
             /// \param		data		The object the read uint8_t bytes from the COM port will be saved to.
             /// \param      wait_ms     The amount of time to wait for data. Set to 0 for non-blocking mode. Set to -1

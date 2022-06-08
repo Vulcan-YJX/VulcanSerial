@@ -1,4 +1,3 @@
-
 //!
 //! @file 			SerialPort.cpp
 //! @author 		Vulcan YJX <vulcanai@163.com> 
@@ -123,9 +122,6 @@ namespace VulcanSerial {
 		if(device_.empty()) {
 			THROW_EXCEPT("Attempted to open file when file path has not been assigned to.");
 		}
-
-		// Attempt to open file
-		//this->fileDesc = open(this->filePath, O_RDWR | O_NOCTTY | O_NDELAY);
 
 		// O_RDONLY for read-only, O_WRONLY for write only, O_RDWR for both read/write access
 		// 3rd, optional parameter is mode_t mode
@@ -376,23 +372,8 @@ namespace VulcanSerial {
 		tty.c_lflag		&= ~ECHONL;								//
 		tty.c_lflag		&= ~ISIG;								// Disables recognition of INTR (interrupt), QUIT and SUSP (suspend) characters
 
-
-		// Try and use raw function call
-		//cfmakeraw(&tty);
-
-		// this->SetTermios(tty);
 		this->SetTermios2(tty);
 
-		/*
-		// Flush port, then apply attributes
-		tcflush(this->fileDesc, TCIFLUSH);
-
-		if(tcsetattr(this->fileDesc, TCSANOW, &tty) != 0)
-		{
-			// Error occurred
-			this->sp->PrintError(SmartPrint::Ss() << "Could not apply terminal attributes for \"" << this->filePath << "\" - " << strerror(errno));
-			return;
-		}*/
 	}
 
 	void SerialPort::Write(const std::string& data) {
@@ -411,8 +392,40 @@ namespace VulcanSerial {
 			throw std::system_error(EFAULT, std::system_category());
 		}
 	}
+    
+    void SerialPort::Write(const uint8_t *data, size_t length){
+        if(state_ != State::OPEN)
+            THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but state != OPEN. Please call Open() first.");
 
-       void SerialPort::WriteBinary(const std::vector<uint8_t>& data) {
+		if(fileDesc_ < 0) {
+			THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but file descriptor < 0, indicating file has not been opened.");
+		}
+
+		int writeResult = write(fileDesc_, data,length);
+        // Check status
+		if (writeResult == -1) {
+			throw std::system_error(EFAULT, std::system_category());
+		}
+    }
+    
+
+    
+    void SerialPort::WriteChar(const unsigned char c){
+        if(state_ != State::OPEN)
+            THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but state != OPEN. Please call Open() first.");
+
+		if(fileDesc_ < 0) {
+			THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but file descriptor < 0, indicating file has not been opened.");
+		}
+
+		int writeResult = write(fileDesc_, &c ,1);
+        // Check status
+		if (writeResult == -1) {
+			throw std::system_error(EFAULT, std::system_category());
+		}
+    }
+    
+    void SerialPort::WriteBinary(const std::vector<uint8_t>& data) {
 
         if(state_ != State::OPEN)
             THROW_EXCEPT(std::string() + __PRETTY_FUNCTION__ + " called but state != OPEN. Please call Open() first.");
@@ -434,14 +447,8 @@ namespace VulcanSerial {
         data.clear();
 
 		if(fileDesc_ == 0) {
-			//this->sp->PrintError(SmartPrint::Ss() << "Read() was called but file descriptor (fileDesc) was 0, indicating file has not been opened.");
-			//return false;
 			THROW_EXCEPT("Read() was called but file descriptor (fileDesc) was 0, indicating file has not been opened.");
 		}
-
-		// Allocate memory for read buffer
-//		char buf [256];
-//		memset (&buf, '\0', sizeof buf);
 
 		// Read from file
         // We provide the underlying raw array from the readBuffer_ vector to this C api.
@@ -456,16 +463,21 @@ namespace VulcanSerial {
 		}
 
 		if(n > 0) {
-
-//			buf[n] = '\0';
-			//printf("%s\r\n", buf);
-//			data.append(buf);
             data = std::string(&readBuffer_[0], n);
-			//std::cout << *str << " and size of string =" << str->size() << "\r\n";
 		}
 
 		// If code reaches here, read must of been successful
 	}
+
+	int SerialPort::ReadChar (void)
+    {
+        uint8_t rxBuf;
+
+        if (read (fileDesc_, &rxBuf, 1) != 1)
+            return -1 ;
+
+        return ((int)rxBuf) & 0xFF ;
+    }
 
 	void SerialPort::ReadBinary(std::vector<uint8_t>& data)
 	{
@@ -496,41 +508,6 @@ namespace VulcanSerial {
 		// If code reaches here, read must of been successful
 	}
 
-	// termios SerialPort::GetTermios() {
-    //     if(fileDesc_ == -1)
-    //         throw std::runtime_error("GetTermios() called but file descriptor was not valid.");
-
-	// 	struct termios tty;
-	// 	memset(&tty, 0, sizeof(tty));
-
-	// 	// Get current settings (will be stored in termios structure)
-	// 	if(tcgetattr(fileDesc_, &tty) != 0)
-	// 	{
-	// 		// Error occurred
-	// 		std::cout << "Could not get terminal attributes for \"" << device_ << "\" - " << strerror(errno) << std::endl;
-	// 		throw std::system_error(EFAULT, std::system_category());
-	// 		//return false;
-	// 	}
-
-	// 	return tty;
-	// }
-
-	// void SerialPort::SetTermios(termios myTermios)
-	// {
-	// 	// Flush port, then apply attributes
-	// 	tcflush(fileDesc_, TCIFLUSH);
-
-	// 	if(tcsetattr(fileDesc_, TCSANOW, &myTermios) != 0)
-	// 	{
-	// 		// Error occurred
-	// 		std::cout << "Could not apply terminal attributes for \"" << device_ << "\" - " << strerror(errno) << std::endl;
-	// 		throw std::system_error(EFAULT, std::system_category());
-
-	// 	}
-
-	// 	// Successful!
-	// }
-
 	termios2 SerialPort::GetTermios2()
 	{
 		struct termios2 term2;
@@ -538,13 +515,6 @@ namespace VulcanSerial {
         ioctl(fileDesc_, TCGETS2, &term2);
 
 		return term2;
-
-        // term2.c_cflag &= ~CBAUD;  /* Remove current BAUD rate */
-        // term2.c_cflag |= BOTHER;  /* Allow custom BAUD rate using int input */
-        // term2.c_ispeed = speed;   /* Set the input BAUD rate */
-        // term2.c_ospeed = speed;   /* Set the output BAUD rate */
-
-        // ioctl(fd, TCSETS2, &term2);
 	}
 
 	void SerialPort::SetTermios2(termios2 tty)
