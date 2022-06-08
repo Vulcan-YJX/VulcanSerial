@@ -1,3 +1,4 @@
 /usr/local/lib/libVulcanSerial.a
 /usr/local/include/VulcanSerial/SerialPort.hpp
+/usr/local/include/VulcanSerial/Termbits.hpp
 /usr/local/include/VulcanSerial/Exception.hpp

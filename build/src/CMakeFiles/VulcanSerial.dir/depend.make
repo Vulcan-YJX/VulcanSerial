@@ -3,6 +3,5 @@
 
 src/CMakeFiles/VulcanSerial.dir/SerialPort.cpp.o: ../include/VulcanSerial/Exception.hpp
 src/CMakeFiles/VulcanSerial.dir/SerialPort.cpp.o: ../include/VulcanSerial/SerialPort.hpp
-src/CMakeFiles/VulcanSerial.dir/SerialPort.cpp.o: ../include/VulcanSerial/Termbits.hpp
 src/CMakeFiles/VulcanSerial.dir/SerialPort.cpp.o: ../src/SerialPort.cpp
 

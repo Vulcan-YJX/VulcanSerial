@@ -209,11 +209,20 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//Value Computed by CMake
+RWCommond_BINARY_DIR:STATIC=/home/vulcan/projects/VulcanSerial/build/example/rw_commond
+
+//Value Computed by CMake
+RWCommond_SOURCE_DIR:STATIC=/home/vulcan/projects/VulcanSerial/example/rw_commond
+
 //Build VulcanSerial_HEADERS shared library
 SERIAL_BUILD_SHARED_LIBS:BOOL=OFF
 
+//The directory containing a CMake configuration file for VulcanSerial.
+VulcanSerial_DIR:PATH=VulcanSerial_DIR-NOTFOUND
+
 //build the example on linux 
-_BUILD_EXAMPLE:BOOL=OFF
+_BUILD_EXAMPLE:BOOL=ON
 
 //Value Computed by CMake
 vulcanserial_BINARY_DIR:STATIC=/home/vulcan/projects/VulcanSerial/build
@@ -326,7 +335,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=2
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=4
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

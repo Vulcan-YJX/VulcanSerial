@@ -1,1 +1,0 @@
-/usr/bin/c++    -rdynamic CMakeFiles/RWCommond.dir/main.cpp.o CMakeFiles/RWCommond.dir/home/vulcan/projects/VulcanSerial/src/SerialPort.cpp.o  -o RWCommond  -lpthread 
