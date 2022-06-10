@@ -6,4 +6,4 @@
 
 
 # VulcanSerial
-linux Serial library
+linux Serial library for develop
