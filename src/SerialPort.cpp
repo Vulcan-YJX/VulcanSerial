@@ -2,8 +2,9 @@
 //! @file 			SerialPort.cpp
 //! @author 		Vulcan YJX <vulcanai@163.com> 
 //! @created		2022-06-07
-//! @last-modified 	2022-06-07
+//! @last-modified 	2022-06-10
 //! @brief			The main serial port class.
+
 
 
 // System includes
@@ -70,9 +71,9 @@ namespace VulcanSerial {
 	SerialPort::~SerialPort() {
         try {
             Close();
-        } catch(...) {
-            // We can't do anything about this!
-            // But we don't want to throw within destructor, so swallow
+        }catch(const std::system_error& e) {
+            std::cout << "Caught system_error with code " << e.code() 
+            << " meaning " << e.what() << '\n';
         }
 	}
 
@@ -123,9 +124,8 @@ namespace VulcanSerial {
 			THROW_EXCEPT("Attempted to open file when file path has not been assigned to.");
 		}
 
-		// O_RDONLY for read-only, O_WRONLY for write only, O_RDWR for both read/write access
-		// 3rd, optional parameter is mode_t mode
-		fileDesc_ = open(device_.c_str(), O_RDWR);
+		fileDesc_ = open(device_.c_str(),  O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK);
+
 
 		// Check status
 		if(fileDesc_ == -1) {
@@ -149,7 +149,6 @@ namespace VulcanSerial {
 
 		//================== CONFIGURE ==================//
 
-		// termios tty = GetTermios();
 		termios2 tty = GetTermios2();
 
 		//================= (.c_cflag) ===============//
@@ -326,18 +325,6 @@ namespace VulcanSerial {
 		tty.c_oflag     =   0;              // No remapping, no delays
 		tty.c_oflag     &=  ~OPOST;			// Make raw
 
-		//================= CONTROL CHARACTERS (.c_cc[]) ==================//
-
-		// c_cc[VTIME] sets the inter-character timer, in units of 0.1s.
-		// Only meaningful when port is set to non-canonical mode
-        // VMIN = 0, VTIME = 0: No blocking, return immediately with what is available
-        // VMIN > 0, VTIME = 0: read() waits for VMIN bytes, could block indefinitely
-        // VMIN = 0, VTIME > 0: Block until any amount of data is available, OR timeout occurs
-        // VMIN > 0, VTIME > 0: Block until either VMIN characters have been received, or VTIME
-        //                      after first character has elapsed
-        // c_cc[WMIN] sets the number of characters to block (wait) for when read() is called.
-        // Set to 0 if you don't want read to block. Only meaningful when port set to non-canonical mode
-
         if(timeout_ms_ == -1) {
             // Always wait for at least one byte, this could
             // block indefinitely
@@ -451,16 +438,7 @@ namespace VulcanSerial {
 		}
 
 		// Read from file
-        // We provide the underlying raw array from the readBuffer_ vector to this C api.
-        // This will work because we do not delete/resize the vector while this method
-        // is called
 		ssize_t n = read(fileDesc_, &readBuffer_[0], readBufferSize_B_);
-
-		// Error Handling
-		if(n < 0) {
-			// Read was unsuccessful
-			throw std::system_error(EFAULT, std::system_category());
-		}
 
 		if(n > 0) {
             data = std::string(&readBuffer_[0], n);
@@ -484,28 +462,16 @@ namespace VulcanSerial {
         data.clear();
 
 		if(fileDesc_ == 0) {
-			//this->sp->PrintError(SmartPrint::Ss() << "Read() was called but file descriptor (fileDesc) was 0, indicating file has not been opened.");
-			//return false;
 			THROW_EXCEPT("Read() was called but file descriptor (fileDesc) was 0, indicating file has not been opened.");
 		}
 
-		// Read from file
-        // We provide the underlying raw array from the readBuffer_ vector to this C api.
-        // This will work because we do not delete/resize the vector while this method
-        // is called
-		ssize_t n = read(fileDesc_, &readBuffer_[0], readBufferSize_B_);
 
-		// Error Handling
-		if(n < 0) {
-			// Read was unsuccessful
-			throw std::system_error(EFAULT, std::system_category());
-		}
+		ssize_t n = read(fileDesc_, &readBuffer_[0], readBufferSize_B_);
 
 		if(n > 0) {
             copy(readBuffer_.begin(), readBuffer_.begin() + n, back_inserter(data));
 		}
 
-		// If code reaches here, read must of been successful
 	}
 
 	termios2 SerialPort::GetTermios2()

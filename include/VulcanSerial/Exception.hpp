@@ -2,8 +2,9 @@
 //! @file 			Exception.cpp
 //! @author 		Vulcan YJX <vulcanai@163.com> 
 //! @created		2022-06-07
-//! @last-modified 	2022-06-07
+//! @last-modified 	2022-06-10
 //! @brief			The main serial port class.
+
 
 
 #ifndef VULCAN_CPP_LINUX_SERIAL_EXCEPTION_H_

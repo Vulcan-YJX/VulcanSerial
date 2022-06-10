@@ -2,7 +2,7 @@
 //! @file 			SerialPort.hpp
 //! @author 		Vulcan YJX <vulcanai@163.com> 
 //! @created		2022-06-07
-//! @last-modified 	2022-06-07
+//! @last-modified 	2022-06-10
 //! @brief			The main serial port class.
 
 #pragma once
@@ -193,6 +193,7 @@ namespace VulcanSerial {
             /// \brief		Closes the COM port.
             void Close();
 
+            /// Wirte Function: This is a piece of shit. Maybe you can use templates instead of function overloading
             /// \brief		Sends a text message over the com port.
             /// \param		data		The data that will be written to the COM port.
             /// \throws		CppLinuxSerial::Exception if state != OPEN.
@@ -207,6 +208,7 @@ namespace VulcanSerial {
             /// \throws		CppLinuxSerial::Exception if state != OPEN.
             void WriteBinary(const std::vector<uint8_t>& data);
 
+            
             /// \brief		Use to read text from the COM port.
             /// \param		data		The object the read characters from the COM port will be saved to.
             /// \param      wait_ms     The amount of time to wait for data. Set to 0 for non-blocking mode. Set to -1
