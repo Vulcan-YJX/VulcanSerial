@@ -42,7 +42,7 @@ using namespace VulcanSerial;
 int main() {
 
 	SerialPort serialPort("/dev/ttyUSB0", BaudRate::B_115200, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
-	serialPort.Open(); 
+	serialPort.Open(0); 
 
 	while(1){
 		while(serialPort.Available() > 0){
