@@ -115,7 +115,7 @@ namespace VulcanSerial {
             ConfigureTermios();
 	}
 
-	void SerialPort::Open()
+	void SerialPort::Open(int32_t timeout_ms = -1)
 	{
 
 		// std::cout << "Attempting to open COM port \"" << device_ << "\"." << std::endl;
@@ -123,9 +123,13 @@ namespace VulcanSerial {
 		if(device_.empty()) {
 			THROW_EXCEPT("Attempted to open file when file path has not been assigned to.");
 		}
-
-		fileDesc_ = open(device_.c_str(),  O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK);
-
+        
+        if(timeout_ms > 0){
+            this->SetTimeout(timeout_ms);
+            fileDesc_ = open(device_.c_str(),  O_RDWR );
+        }else{
+            fileDesc_ = open(device_.c_str(),  O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK);
+        }
 
 		// Check status
 		if(fileDesc_ == -1) {
@@ -450,9 +454,11 @@ namespace VulcanSerial {
 	int SerialPort::ReadChar (void)
     {
         uint8_t rxBuf;
-
-        if (read (fileDesc_, &rxBuf, 1) != 1)
-            return -1 ;
+        
+        while(this->Available() > 0){
+            if (read (fileDesc_, &rxBuf, 1) != 1)
+                return -1 ;
+        }
 
         return ((int)rxBuf) & 0xFF ;
     }
