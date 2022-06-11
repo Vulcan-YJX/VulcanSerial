@@ -115,7 +115,7 @@ namespace VulcanSerial {
             ConfigureTermios();
 	}
 
-	void SerialPort::Open(int32_t timeout_ms = -1)
+	void SerialPort::Open(int32_t timeout_ms)
 	{
 
 		// std::cout << "Attempting to open COM port \"" << device_ << "\"." << std::endl;
