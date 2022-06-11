@@ -149,16 +149,7 @@ namespace VulcanSerial {
 
 	void SerialPort::ConfigureTermios()
 	{
-		// std::cout << "Configuring COM port \"" << device_ << "\"." << std::endl;
-
-		//================== CONFIGURE ==================//
-
 		termios2 tty = GetTermios2();
-
-		//================= (.c_cflag) ===============//
-
-		// Set num. data bits
-		// See https://man7.org/linux/man-pages/man3/tcflush.3.html
 		tty.c_cflag     &=  ~CSIZE;			// CSIZE is a mask for the number of bits per character
 		switch(numDataBits_) {
 			case NumDataBits::FIVE:
@@ -176,9 +167,7 @@ namespace VulcanSerial {
 			default:
 				THROW_EXCEPT("numDataBits_ value not supported!");
 		}
-		
-		// Set parity
-		// See https://man7.org/linux/man-pages/man3/tcflush.3.html
+
 		switch(parity_) {
 			case Parity::NONE:
 				tty.c_cflag     &=  ~PARENB;
@@ -214,10 +203,6 @@ namespace VulcanSerial {
 
         //===================== BAUD RATE =================//
 
-		// We used to use cfsetispeed() and cfsetospeed() with the B... macros, but this didn't allow
-		// us to set custom baud rates. So now to support both standard and custom baud rates lets
-		// just make everything "custom". This giant switch statement could be replaced with a map/lookup
-		// in the future
 		if (baudRateType_ == BaudRateType::STANDARD) {
 			tty.c_cflag &= ~CBAUD;
 			tty.c_cflag |= CBAUDEX;
