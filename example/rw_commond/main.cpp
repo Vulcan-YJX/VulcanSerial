@@ -8,7 +8,7 @@ using namespace VulcanSerial;
 int main() {
 
 	SerialPort serialPort("/dev/ttyUSB0", BaudRate::B_115200, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
-	serialPort.Open(0); 
+	serialPort.Open(); 
 
 	while(1){
 		while(serialPort.Available() > 0){
