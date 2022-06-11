@@ -87,7 +87,15 @@ namespace VulcanSerial {
     class SerialPort {
             
              private:
-
+                 
+            /// \brief      Sets the read timeout (in milliseconds)/blocking mode.
+            /// \details    Only call when state != OPEN. This method manupulates VMIN and VTIME.
+            /// \param      timeout_ms  Set to -1 to infinite timeout, 0 to return immediately with any data (non
+            ///             blocking, or >0 to wait for data for a specified number of milliseconds). Timeout will
+            ///             be rounded to the nearest 100ms (a Linux API restriction). Maximum value limited to
+            ///             25500ms (another Linux API restriction).
+            void SetTimeout(int32_t timeout_ms);
+            
             /// \brief		Configures the tty device as a serial port.
             /// \warning    Device must be open (valid file descriptor) when this is called.
             void ConfigureTermios();
@@ -173,13 +181,7 @@ namespace VulcanSerial {
 
             void SetNumStopBits(NumStopBits numStopBits);
 
-            /// \brief      Sets the read timeout (in milliseconds)/blocking mode.
-            /// \details    Only call when state != OPEN. This method manupulates VMIN and VTIME.
-            /// \param      timeout_ms  Set to -1 to infinite timeout, 0 to return immediately with any data (non
-            ///             blocking, or >0 to wait for data for a specified number of milliseconds). Timeout will
-            ///             be rounded to the nearest 100ms (a Linux API restriction). Maximum value limited to
-            ///             25500ms (another Linux API restriction).
-            void SetTimeout(int32_t timeout_ms);
+
 
             /// \brief		Enables/disables echo.
             /// \param		value		Pass in true to enable echo, false to disable echo.
@@ -188,7 +190,10 @@ namespace VulcanSerial {
             /// \brief		Opens the COM port for use.
             /// \throws		CppLinuxSerial::Exception if device cannot be opened.
             /// \note		Must call this before you can configure the COM port.
-            void Open();
+            /// \param      timeout_ms  Set to -1 to infinite timeout,or >0 to wait for data for a specified number of milliseconds). Timeout will
+            ///             be rounded to the nearest 100ms (a Linux API restriction). Maximum value limited to
+            ///             25500ms (another Linux API restriction).
+            void Open(int32_t timeout_ms);
 
             /// \brief		Closes the COM port.
             void Close();
