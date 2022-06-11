@@ -8,7 +8,7 @@
 # VulcanSerial
 ​	Linux serial port library written in C++.
 
-## Description
+## Description 项目描述
 
 Library for communicating with COM ports on a Linux system.
 
@@ -29,9 +29,7 @@ $ make
 $ sudo make install
 ```
 
-
-
-## Examples
+## Examples 测试案例
 
 ```c++
 // fileName: main.cpp
