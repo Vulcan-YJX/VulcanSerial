@@ -34,7 +34,7 @@ $ sudo make install
 ```c++
 // fileName: main.cpp
 
-#include "CppLinuxSerial/SerialPort.hpp"
+#include "VulcanSerial/SerialPort.hpp"
 #include <iostream>
 
 using namespace VulcanSerial;
@@ -63,6 +63,6 @@ int main() {
 Make sure you have install `VulcanSerial` lib.
 
 ```bash
-g++ main.cpp -lCppLinuxSerial
+g++ main.cpp -lVulcanSerial
 ```
 
