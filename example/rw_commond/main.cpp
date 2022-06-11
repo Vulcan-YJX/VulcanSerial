@@ -8,10 +8,10 @@ using namespace VulcanSerial;
 int main() {
 
 	SerialPort serialPort("/dev/ttyUSB0", BaudRate::B_115200, NumDataBits::EIGHT, Parity::NONE, NumStopBits::ONE);
-	serialPort.Open();
+	serialPort.Open(); 
 
 	while(1){
-		while(Available() > 0){
+		while(serialPort.Available() > 0){
 		    // Write some ASCII data
 		    serialPort.Write("Vulcan Serial");
 
@@ -19,7 +19,7 @@ int main() {
 		    serialPort.Read(readData);
 		    std::cout << readData << std::endl;
 		}
-    
+
 	}
 	// Close the serial port
 	serialPort.Close();
