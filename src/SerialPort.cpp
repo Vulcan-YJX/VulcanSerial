@@ -26,8 +26,10 @@
 #include <iterator>
 
 // User includes
-#include "VulcanSerial/Exception.hpp"
-#include "VulcanSerial/SerialPort.hpp"
+
+#include "Exception.hpp"
+#include "SerialPort.hpp"
+
 
 #define    BOTHER 0010000
 
@@ -129,6 +131,7 @@ namespace VulcanSerial {
             fileDesc_ = open(device_.c_str(),  O_RDWR );
         }else{
             fileDesc_ = open(device_.c_str(),  O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK);
+            fcntl (fileDesc_, F_SETFL, O_RDWR) ;
         }
 
 		// Check status
@@ -439,12 +442,14 @@ namespace VulcanSerial {
 	int SerialPort::ReadChar (void)
     {
         uint8_t rxBuf;
+        if (read (fileDesc_, &rxBuf, 1) != 1)
+            return -1 ;
+            
+        // while(this->Available() > 0){
+        //     if (read (fileDesc_, &rxBuf, 1) != 1)
+        //         return -1 ;
+        // }
         
-        while(this->Available() > 0){
-            if (read (fileDesc_, &rxBuf, 1) != 1)
-                return -1 ;
-        }
-
         return ((int)rxBuf) & 0xFF ;
     }
 
