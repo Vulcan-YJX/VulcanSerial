@@ -11,7 +11,7 @@ file(GLOB VulcanSerial_SRC
   
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include/VulcanSerial)
  
-option(SERIAL_BUILD_SHARED_LIBS "Build VulcanSerial_HEADERS shared library" OFF)
+option(SERIAL_BUILD_SHARED_LIBS "Build VulcanSerial_HEADERS shared library" ON)
 
 if (SERIAL_BUILD_SHARED_LIBS)
   set(LibType SHARED)
