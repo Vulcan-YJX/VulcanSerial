@@ -15,7 +15,7 @@ else()
   message(STATUS "Not found system VulcanSerial, compile example with source code")
 
   set(VulcanSerialRootPath "${CMAKE_CURRENT_SOURCE_DIR}/../..")
-  include_directories(${VulcanSerialRootPath}/include)
+  include_directories(${VulcanSerialRootPath}/include/VulcanSerial)
   list(APPEND VulcanSerialSourceFiles ${VulcanSerialRootPath}/src/SerialPort.cpp)
   add_executable( ${PROJECT_NAME} main.cpp ${VulcanSerialSourceFiles})
   target_link_libraries( ${PROJECT_NAME} pthread)
